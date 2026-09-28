@@ -33,8 +33,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: 检查文件、引用和锚点
+      # 两步分开跑，失败时能一眼看出是「HTML 写错了」还是「JS 逻辑坏了」
+      - name: 检查 HTML 结构、引用、锚点与作品属性
         run: node tools/check-page.mjs
+      - name: 跑作品筛选排序的逻辑自测
+        run: node tools/test-works.mjs
 
   # 第二个任务：发布。needs 表示必须等 check 成功才开始
   deploy:
